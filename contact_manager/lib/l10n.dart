@@ -1,0 +1,58 @@
+class L10n {
+  static String getText(String key, String locale) {
+    final Map<String, Map<String, String>> _localizedValues = {
+      'fr': {
+        'cancel': 'Retour',
+        'delete': 'Supprimer',
+        'no_contacts': 'Aucun contact',
+        'contacts': 'Contacts',
+        'welcome': 'Bienvenue dans l’application',
+        'add_contact': 'Ajouter un contact',
+        'edit_contact': 'Modifier un contact',
+        'delete_contact': 'Supprimer',
+        'confirm_delete': 'Voulez-vous vraiment supprimer ce contact ?',
+        'message': 'Message',
+        'search': 'Rechercher un contact...',
+        'name': 'Nom',
+        'phone': 'Téléphone',
+        'email': 'Email',
+        'address': 'Adresse',
+        'notes': 'Notes',
+        'enter_name': 'Veuillez entrer un nom',
+        'enter_phone': 'Veuillez entrer un numéro',
+        'invalid_phone': 'Numéro invalide',
+        'enter_email': 'Veuillez entrer un email',
+        'invalid_email': 'Email invalide',
+        'save': 'Sauvegarder',
+        'choose_color': 'Choisir une couleur',
+      },
+      'en': {
+        'cancel': 'cancel',
+        'delete': 'Delete',
+        'no_contacts': 'No contacts',
+        'contacts': 'Contacts',
+        'welcome': 'Welcome to the app',
+        'add_contact': 'Add Contact',
+        'edit_contact': 'Edit Contact',
+        'delete_contact': 'Delete',
+        'confirm_delete': 'Are you sure you want to delete this contact?',
+        'message': 'Message',
+        'search': 'Search contact...',
+        'name': 'Name',
+        'phone': 'Phone',
+        'email': 'Email',
+        'address': 'Address',
+        'notes': 'Notes',
+        'enter_name': 'Please enter a name',
+        'enter_phone': 'Please enter a phone number',
+        'invalid_phone': 'Invalid phone number',
+        'enter_email': 'Please enter an email',
+        'invalid_email': 'Invalid email',
+        'save': 'Save',
+        'choose_color': 'Choose a color',
+      },
+    };
+
+    return _localizedValues[locale]?[key] ?? key;
+  }
+}
