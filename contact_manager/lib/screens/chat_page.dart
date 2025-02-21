@@ -3,6 +3,7 @@ import '../models/contact.dart';
 import '../models/message.dart';
 import '../database/database_helper.dart';
 import 'package:intl/intl.dart';
+import 'dart:math'; // ✅ Pour générer des réponses aléatoires
 
 class ChatPage extends StatefulWidget {
   final Contact contact;
@@ -19,6 +20,16 @@ class ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   List<Message> messages = [];
 
+  final List<String> _autoResponses = [
+    // ✅ Liste des réponses automatiques
+    "Coucou toi, tu aimes les coquillettes ?",
+    "Tout à fait !",
+    "Tu m'ennuies",
+    "Il est où le outstanding là ?",
+    "Moi aussi je t'aime bien <3",
+    "Allez, jouons encore un peu tous les deux ;)"
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -33,27 +44,46 @@ class ChatPageState extends State<ChatPage> {
 
     // 🔥 Défilement automatique vers le bas après le chargement
     Future.delayed(const Duration(milliseconds: 100), () {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
     });
   }
 
   Future<void> _sendMessage() async {
     if (_messageController.text.trim().isEmpty) return;
 
-    final newMessage = Message(
+    final sentMessage = Message(
       contactId: widget.contact.id!,
       content: _messageController.text.trim(),
       timestamp: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-      isSent: true,
+      isSent: true, // ✅ Message envoyé par l’utilisateur
     );
 
-    await dbHelper.insertMessage(newMessage);
+    await dbHelper.insertMessage(sentMessage);
     _messageController.clear();
-    _loadMessages();
-
-    // 🔥 Défilement automatique vers le bas après l’envoi d’un message
+    // 🔥 Défilement automatique vers le bas après le chargement
     Future.delayed(const Duration(milliseconds: 100), () {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
+    await _loadMessages();
+
+    // 🔥 Réponse automatique après 1 seconde
+    Future.delayed(const Duration(seconds: 1), () async {
+      final randomResponse = _autoResponses[
+          Random().nextInt(_autoResponses.length)]; // ✅ Choix aléatoire
+
+      final replyMessage = Message(
+        contactId: widget.contact.id!,
+        content: randomResponse,
+        timestamp: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+        isSent: false, // ✅ Message reçu (automatique)
+      );
+
+      await dbHelper.insertMessage(replyMessage);
+      await _loadMessages();
     });
   }
 

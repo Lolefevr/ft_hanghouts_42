@@ -25,6 +25,7 @@ class L10n {
         'invalid_email': 'Email invalide',
         'save': 'Sauvegarder',
         'choose_color': 'Choisir une couleur',
+        'choose_photo': 'Choisir une photo',
       },
       'en': {
         'cancel': 'cancel',
@@ -50,6 +51,7 @@ class L10n {
         'invalid_email': 'Invalid email',
         'save': 'Save',
         'choose_color': 'Choose a color',
+        'choose_photo': 'Choose a photo',
       },
     };
 

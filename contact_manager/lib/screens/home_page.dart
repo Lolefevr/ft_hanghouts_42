@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../database/database_helper.dart';
 import '../l10n.dart';
@@ -138,8 +140,14 @@ class HomePageState extends State<HomePage> {
                       return ListTile(
                         leading: CircleAvatar(
                           backgroundColor: Colors.blueAccent,
-                          child: Text(contact.name[0],
-                              style: const TextStyle(color: Colors.white)),
+                          backgroundImage:
+                              contact.photo != null && contact.photo!.isNotEmpty
+                                  ? FileImage(File(contact.photo!))
+                                  : null,
+                          child: contact.photo == null || contact.photo!.isEmpty
+                              ? Text(contact.name[0],
+                                  style: const TextStyle(color: Colors.white))
+                              : null,
                         ),
                         title: Text(contact.name,
                             style:

@@ -5,6 +5,7 @@ class Contact {
   String email;
   String address;
   String notes;
+  String? photo;
 
   Contact({
     this.id,
@@ -13,6 +14,7 @@ class Contact {
     required this.email,
     required this.address,
     required this.notes,
+    this.photo,
   });
 
   // Convertir un contact en Map (pour SQLite)
@@ -24,6 +26,7 @@ class Contact {
       'email': email,
       'address': address,
       'notes': notes,
+      'photo': photo,
     };
   }
 
@@ -36,6 +39,7 @@ class Contact {
       email: map['email'],
       address: map['address'],
       notes: map['notes'],
+      photo: map['photo'],
     );
   }
 }

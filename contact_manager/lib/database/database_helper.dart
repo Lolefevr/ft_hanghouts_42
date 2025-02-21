@@ -26,7 +26,8 @@ class DatabaseHelper {
     phone TEXT NOT NULL,
     email TEXT NOT NULL,
     address TEXT NOT NULL,
-    notes TEXT NOT NULL
+    notes TEXT NOT NULL,
+    photo TEXT
   );
 ''').then((_) {
           return db.execute('''

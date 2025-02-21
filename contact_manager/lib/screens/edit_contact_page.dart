@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/contact.dart';
@@ -54,6 +56,7 @@ class EditContactPageState extends State<EditContactPage> {
         email: _emailController.text,
         address: _addressController.text,
         notes: _notesController.text,
+        photo: _selectedImage?.path,
       );
 
       if (widget.contact == null) {
@@ -88,11 +91,22 @@ class EditContactPageState extends State<EditContactPage> {
     return null;
   }
 
+  File? _selectedImage;
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final locale = Provider.of<LocaleProvider>(context)
-        .locale
-        .languageCode; // 🔥 Récupère la langue actuelle
+    final locale = Provider.of<LocaleProvider>(context).locale.languageCode;
 
     return Scaffold(
       appBar: AppBar(
@@ -108,6 +122,28 @@ class EditContactPageState extends State<EditContactPage> {
           key: _formKey,
           child: Column(
             children: [
+              // 🔥 Ajout du bouton pour uploader une image
+              GestureDetector(
+                onTap: _pickImage,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: _selectedImage != null
+                      ? FileImage(_selectedImage!)
+                      : widget.contact?.photo != null
+                          ? FileImage(File(widget.contact!.photo!))
+                          : null,
+                  child: _selectedImage == null && widget.contact?.photo == null
+                      ? Icon(Icons.camera_alt, size: 50, color: Colors.grey)
+                      : null,
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: _pickImage,
+                child: Text(L10n.getText('choose_photo', locale)),
+              ),
+
+              // 🔥 Tous les champs du formulaire restent inchangés
               TextFormField(
                 controller: _nameController,
                 decoration:
